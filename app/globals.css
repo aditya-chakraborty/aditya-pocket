@@ -3,6 +3,14 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --editor-shadow: 0 1px 3px rgba(0, 0, 0, 0.04),
+    0 4px 12px rgba(0, 0, 0, 0.03);
+  --editor-shadow-hover: 0 2px 6px rgba(0, 0, 0, 0.06),
+    0 8px 24px rgba(0, 0, 0, 0.05);
+  --border-color: rgba(0, 0, 0, 0.08);
+  --toolbar-bg: #fcfcfc;
+  --highlight-bg: #fff0ee;
+  --highlight-underline: #f5736c;
 }
 
 @theme inline {
@@ -12,15 +20,267 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  background: var(--background);
+  background: #f4f4f5;
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, sans-serif;
+}
+
+/* ── Editor card ─────────────────────────────────────────────────────────── */
+
+.editor-card {
+  background: #fff;
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  box-shadow: var(--editor-shadow);
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+}
+
+.editor-card:focus-within {
+  box-shadow: var(--editor-shadow-hover);
+}
+
+/* ── Toolbar wrapper ─────────────────────────────────────────────────────── */
+
+.editor-toolbar-wrapper {
+  border-bottom: 1px solid var(--border-color);
+  background: var(--toolbar-bg);
+  padding: 6px 8px;
+}
+
+/* ── Footer ──────────────────────────────────────────────────────────────── */
+
+.editor-footer {
+  border-top: 1px solid var(--border-color);
+  background: var(--toolbar-bg);
+}
+
+/* ── Tiptap editor content area ──────────────────────────────────────────── */
+
+.editor-content {
+  min-height: 460px;
+  max-height: 62vh;
+  overflow-y: auto;
+  padding: 32px 36px;
+  outline: none;
+  font-size: 16px;
+  line-height: 1.85;
+  color: #232326;
+  letter-spacing: -0.008em;
+}
+
+.editor-content:focus {
+  outline: none;
+}
+
+/* Custom scrollbar */
+.editor-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.editor-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.editor-content::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.12);
+  border-radius: 3px;
+}
+
+.editor-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.22);
+}
+
+/* ── Prose styling ───────────────────────────────────────────────────────── */
+
+.editor-content p {
+  margin-bottom: 0.9em;
+}
+
+.editor-content h1 {
+  font-size: 1.7em;
+  font-weight: 700;
+  margin-bottom: 0.45em;
+  margin-top: 1.1em;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+  color: #111;
+}
+
+.editor-content h2 {
+  font-size: 1.35em;
+  font-weight: 650;
+  margin-bottom: 0.4em;
+  margin-top: 0.9em;
+  line-height: 1.3;
+  letter-spacing: -0.018em;
+  color: #111;
+}
+
+.editor-content h3 {
+  font-size: 1.12em;
+  font-weight: 600;
+  margin-bottom: 0.35em;
+  margin-top: 0.7em;
+  line-height: 1.4;
+  color: #222;
+}
+
+.editor-content ul,
+.editor-content ol {
+  padding-left: 1.6em;
+  margin-bottom: 0.8em;
+}
+
+.editor-content ul {
+  list-style-type: disc;
+}
+
+.editor-content ol {
+  list-style-type: decimal;
+}
+
+.editor-content li {
+  margin-bottom: 0.3em;
+}
+
+.editor-content li p {
+  margin-bottom: 0.15em;
+}
+
+.editor-content blockquote {
+  border-left: 3px solid #e0e0e0;
+  padding-left: 1.15em;
+  margin-left: 0;
+  margin-bottom: 0.8em;
+  color: #6b6b6b;
+  font-style: italic;
+}
+
+.editor-content code {
+  background: #f2f2f3;
+  border-radius: 4px;
+  padding: 0.15em 0.45em;
+  font-size: 0.87em;
+  font-family: var(--font-geist-mono), "SF Mono", monospace;
+}
+
+.editor-content pre {
+  background: #f6f6f7;
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin-bottom: 0.8em;
+  overflow-x: auto;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.editor-content pre code {
+  background: none;
+  padding: 0;
+}
+
+.editor-content hr {
+  border: none;
+  border-top: 1px solid rgba(0, 0, 0, 0.07);
+  margin: 1.6em 0;
+}
+
+.editor-content strong {
+  font-weight: 640;
+}
+
+.editor-content a {
+  color: #1a6dff;
+  text-decoration: underline;
+  text-decoration-color: rgba(26, 109, 255, 0.3);
+  text-underline-offset: 2px;
+  transition: text-decoration-color 0.15s ease;
+  cursor: pointer;
+}
+
+.editor-content a:hover {
+  text-decoration-color: rgba(26, 109, 255, 0.8);
+}
+
+/* ── Sentence too-long highlight ─────────────────────────────────────────── */
+
+.sentence-too-long {
+  background-color: var(--highlight-bg);
+  text-decoration: underline wavy var(--highlight-underline);
+  text-decoration-skip-ink: none;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1.2px;
+  border-radius: 3px;
+  padding-block: 2px;
+  transition: background-color 0.2s ease;
+}
+
+/* ── Placeholder ─────────────────────────────────────────────────────────── */
+
+.tiptap p.is-editor-empty:first-child::before {
+  color: #b8b8bc;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+  font-style: italic;
+}
+
+/* ── Tiptap focus ────────────────────────────────────────────────────────── */
+
+.tiptap:focus,
+.tiptap {
+  outline: none;
+}
+
+/* ── Toolbar button refinements ──────────────────────────────────────────── */
+
+.editor-toolbar-wrapper .ant-btn-text {
+  color: #555;
+  border-radius: 6px !important;
+  transition: all 0.15s ease;
+}
+
+.editor-toolbar-wrapper .ant-btn-text:hover {
+  color: #111 !important;
+  background: rgba(0, 0, 0, 0.05) !important;
+}
+
+.editor-toolbar-wrapper .ant-btn-primary {
+  border-radius: 6px !important;
+}
+
+.editor-toolbar-wrapper .ant-select-selector {
+  border-radius: 8px !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
+  font-size: 13px !important;
+}
+
+.editor-toolbar-wrapper .ant-divider-vertical {
+  border-inline-start-color: rgba(0, 0, 0, 0.06);
+}
+
+/* ── Bubble toolbar ──────────────────────────────────────────────────────── */
+
+.bubble-toolbar .ant-btn-text {
+  color: #555;
+  border-radius: 6px !important;
+}
+
+.bubble-toolbar .ant-btn-text:hover {
+  color: #111 !important;
+  background: rgba(0, 0, 0, 0.05) !important;
+}
+
+/* ── Character count progress override ───────────────────────────────────── */
+
+.char-count-bar .ant-progress-bg {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
